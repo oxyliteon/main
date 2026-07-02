@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎮 100 Daftar Permainan Seru</title>
+
+    <!-- GSAP CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js">
+    </script>
+
+    <style>
+        /* ===== RESET & ROOT ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #4a90e2;
+            --primary-dark: #3a7bc8;
+            --secondary: #f39c12;
+            --secondary-light: #f5b342;
+            --bg: #f0f4f8;
+            --text: #1e2a3a;
+            --text-light: #5a6b7e;
+            --white: #ffffff;
+            --shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --radius: 14px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 24px 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            flex: 1;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            text-align: center;
+            margin-bottom: 32px;
+            padding: 10px 0;
+        }
+
+        header h1 {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        header h1 span {
+            background: linear-gradient(135deg, var(--primary), #6a5acd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            font-size: 1.05rem;
+            color: var(--text-light);
+            margin-top: 6px;
+            font-weight: 400;
+        }
+
+        /* ===== CONTROLS ===== */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: center;
+            background: var(--white);
+            padding: 18px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+            border: 1px solid rgba(74, 144, 226, 0.08);
+        }
+
+        .controls .search-wrap {
+            flex: 1 1 220px;
+            min-width: 160px;
+            position: relative;
+        }
+
+        .controls .search-wrap input {
+            width: 100%;
+            padding: 11px 16px 11px 40px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background: #f8fafc;
+            transition: var(--transition);
+            outline: none;
+            color: var(--text);
+        }
+
+        .controls .search-wrap input:focus {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.12);
+        }
+
+        .controls .search-wrap .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .controls select {
+            padding: 11px 18px;
+            border-radius: 10px;
+            border: 1.5px solid #e2e8f0;
+            background: #f8fafc;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            cursor: pointer;
+            outline: none;
+            transition: var(--transition);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6b7e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 38px;
+            min-width: 150px;
+        }
+
+        .controls select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.12);
+        }
+
+        .controls .btn-random {
+            padding: 11px 28px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        }
+
+        .controls .btn-random:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 20px rgba(243, 156, 18, 0.4);
+        }
+
+        .controls .btn-random:active {
+            transform: scale(0.96);
+        }
+
+        .controls .btn-random .dice {
+            font-size: 1.2rem;
+        }
+
+        /* ===== GAME COUNT ===== */
+        .game-count {
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 18px;
+            font-weight: 500;
+        }
+
+        .game-count strong {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ===== GRID ===== */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 18px;
+            min-height: 200px;
+            position: relative;
+        }
+
+        /* ===== CARD ===== */
+        .game-card {
+            background: var(--white);
+            padding: 16px 18px 18px;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border-left: 5px solid var(--primary);
+            transition: var(--transition);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            will-change: transform, opacity;
+        }
+
+        .game-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.02), transparent);
+            pointer-events: none;
+            border-radius: var(--radius);
+        }
+
+        .game-card .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .game-card h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--primary);
+            font-weight: 700;
+            line-height: 1.3;
+            flex: 1;
+        }
+
+        .game-card .category-tag {
+            font-size: 0.65rem;
+            font-weight: 600;
+            background: #eef2f7;
+            padding: 3px 12px;
+            border-radius: 20px;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .game-card .game-id {
+            font-size: 0.7rem;
+            color: #b0c0d0;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .game-card p {
+            margin: 8px 0 0;
+            font-size: 0.88rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        /* ===== HIGHLIGHT ===== */
+        .game-card.highlight {
+            border-left-color: var(--secondary);
+            background: linear-gradient(135deg, #fffcf0, #fff8e6);
+            z-index: 10;
+            box-shadow: 0 0 0 2px var(--secondary), 0 12px 40px rgba(243, 156, 18, 0.25);
+        }
+
+        .game-card.highlight .category-tag {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .game-card.highlight h3 {
+            color: #d4880f;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 3.5rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 48px;
+            padding: 20px 0 12px;
+            text-align: center;
+            border-top: 1px solid rgba(74, 144, 226, 0.10);
+            font-size: 0.9rem;
+            color: var(--text-light);
+            letter-spacing: 0.3px;
+        }
+
+        .footer .brand {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .footer .brand-highlight {
+            color: var(--secondary);
+        }
+
+        .footer .heart {
+            color: #e74c3c;
+            display: inline-block;
+            animation: heartBeat 1.8s infinite ease-in-out;
+        }
+
+        @keyframes heartBeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            15% {
+                transform: scale(1.25);
+            }
+            30% {
+                transform: scale(1);
+            }
+            45% {
+                transform: scale(1.15);
+            }
+            60% {
+                transform: scale(1);
+            }
+        }
+
+        .footer .footer-dots {
+            display: inline-block;
+            animation: dotsPulse 2s infinite;
+        }
+
+        @keyframes dotsPulse {
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 640px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .controls {
+                padding: 14px 16px;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .controls .search-wrap {
+                flex: 1 1 auto;
+            }
+
+            .controls select {
+                min-width: 100%;
+            }
+
+            .controls .btn-random {
+                justify-content: center;
+            }
+
+            .game-grid {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .game-card {
+                padding: 14px 16px;
+            }
+
+            .footer {
+                margin-top: 32px;
+                padding: 16px 0 8px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 900px) {
+            .game-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #eef2f7;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c0d0e0;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
+        }
+
+        /* ===== NO-SELECT ===== */
+        .game-card,
+        .controls select,
+        .controls .btn-random {
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- ===== HEADER ===== -->
+        <header>
+            <h1>
+                🎮 <span>100 Daftar Permainan Seru</span>
+            </h1>
+            <p>Cari, filter, atau pilih permainan acak untuk mengisi waktumu!</p>
+        </header>
+
+        <!-- ===== CONTROLS ===== -->
+        <div class="controls" id="controls">
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="searchInput" placeholder="Cari nama permainan..." />
+            </div>
+
+            <select id="categoryFilter">
+                <option value="all">📋 Semua Kategori</option>
+                <option value="Tradisional">🏕️ Tradisional &amp; Fisik</option>
+                <option value="Papan">♟️ Papan &amp; Kartu</option>
+                <option value="Digital">🎮 Digital (Video Games)</option>
+                <option value="Asah Otak">🧠 Asah Otak &amp; Kreatif</option>
+                <option value="Sosial">🤝 Sosial &amp; Kelompok</option>
+            </select>
+
+            <button class="btn-random" id="randomBtn">
+                <span class="dice">🎲</span> Pilihkan Acak!
+            </button>
+        </div>
+
+        <!-- ===== GAME COUNT ===== -->
+        <div class="game-count" id="gameCount">
+            Menampilkan <strong id="countNumber">100</strong> permainan
+        </div>
+
+        <!-- ===== GRID ===== -->
+        <div class="game-grid" id="gameGrid"></div>
+
+        <!-- ===== FOOTER ===== -->
+        <div class="footer">
+            <span class="footer-dots">✦</span>
+            &copy; 2026
+            <span class="brand">Anzi<span class="brand-highlight">Game</span></span>
+            <span class="footer-dots">✦</span>
+            <span style="margin: 0 6px;">·</span>
+            Dibuat dengan <span class="heart">❤️</span> untuk pecinta permainan
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        //  DATA — 100 GAMES
+        // ============================================================
+        const games = [
+            // Tradisional (1–20)
+            { id: 1, cat: "Tradisional", name: "Petak Umpet", desc: "Satu orang mencari, sisanya bersembunyi." },
+            { id: 2, cat: "Tradisional", name: "Gobak Sodor", desc: "Menghadang lawan agar tidak melewati garis batas." },
+            { id: 3, cat: "Tradisional", name: "Benteng-bentengan", desc: "Adu strategi untuk menyentuh markas lawan." },
+            { id: 4, cat: "Tradisional", name: "Lompat Tali", desc: "Melompati untaian karet gelang dengan ketinggian bertingkat." },
+            { id: 5, cat: "Tradisional", name: "Egrang", desc: "Berjalan menggunakan galah bambu yang diberi pijakan." },
+            { id: 6, cat: "Tradisional", name: "Balap Karung", desc: "Lomba lari dengan kaki di dalam karung goni." },
+            { id: 7, cat: "Tradisional", name: "Tarik Tambang", desc: "Dua tim saling tarik-menarik tali tambang." },
+            { id: 8, cat: "Tradisional", name: "Kelereng", desc: "Menyentil bola kaca kecil untuk mengenai target." },
+            { id: 9, cat: "Tradisional", name: "Engklek", desc: "Melompat dengan satu kaki pada kotak-kotak di tanah." },
+            { id: 10, cat: "Tradisional", name: "Congklak", desc: "Memindahkan biji-bijian ke lubang papan kayu." },
+            { id: 11, cat: "Tradisional", name: "Bola Kasti", desc: "Permainan memukul bola dan berlari ke pos-pos aman." },
+            { id: 12, cat: "Tradisional", name: "Sepak Bola", desc: "Memasukkan bola ke gawang lawan menggunakan kaki." },
+            { id: 13, cat: "Tradisional", name: "Basket", desc: "Memasukkan bola ke dalam ring." },
+            { id: 14, cat: "Tradisional", name: "Bulu Tangkis", desc: "Memukul kok melewati net menggunakan raket." },
+            { id: 15, cat: "Tradisional", name: "Tenis Meja", desc: "Memukul bola pingpong di atas meja khusus." },
+            { id: 16, cat: "Tradisional", name: "Lari Estafet", desc: "Berlari sambil menyerahkan tongkat ke rekan tim." },
+            { id: 17, cat: "Tradisional", name: "Tag (Kejar-kejaran)", desc: "Satu orang menjadi 'jadi' dan harus menyentuh orang lain." },
+            { id: 18, cat: "Tradisional", name: "Lampu Merah, Lampu Hijau", desc: "Bergerak saat 'hijau', berhenti saat 'merah'." },
+            { id: 19, cat: "Tradisional", name: "Panjat Pinang", desc: "Memanjat pohon pinang licin untuk mengambil hadiah." },
+            { id: 20, cat: "Tradisional", name: "Lari Kelereng", desc: "Membawa kelereng di sendok dengan mulut sambil berlari." },
+            // Papan (21–40)
+            { id: 21, cat: "Papan", name: "Catur", desc: "Strategi perang di atas papan kotak hitam-putih." },
+            { id: 22, cat: "Papan", name: "Monopoli", desc: "Permainan transaksi properti dan ekonomi." },
+            { id: 23, cat: "Papan", name: "Ular Tangga", desc: "Berusaha mencapai finis dengan bantuan dadu." },
+            { id: 24, cat: "Papan", name: "Scrabble", desc: "Menyusun kata dari kepingan huruf." },
+            { id: 25, cat: "Papan", name: "Ludo", desc: "Menjalankan empat pion menuju rumah di tengah papan." },
+            { id: 26, cat: "Papan", name: "Uno", desc: "Menghabiskan kartu di tangan dengan mencocokkan warna/angka." },
+            { id: 27, cat: "Papan", name: "Uno Stacko", desc: "Mengambil balok dari menara tanpa membuatnya roboh." },
+            { id: 28, cat: "Papan", name: "Halma", desc: "Memindahkan semua pion ke sudut lawan." },
+            { id: 29, cat: "Papan", name: "Domino", desc: "Menyambungkan kartu berdasarkan jumlah titik yang sama." },
+            { id: 30, cat: "Papan", name: "Remi", desc: "Mengumpulkan seri atau grup kartu yang sama." },
+            { id: 31, cat: "Papan", name: "Poker", desc: "Permainan kartu strategi dan taruhan." },
+            { id: 32, cat: "Papan", name: "Werewolf", desc: "Mencari serigala di antara warga." },
+            { id: 33, cat: "Papan", name: "Othello", desc: "Membalikkan kepingan lawan menjadi warna kita." },
+            { id: 34, cat: "Papan", name: "Mahjong", desc: "Permainan strategi menggunakan ubin simbol." },
+            { id: 35, cat: "Papan", name: "Jenga", desc: "Menarik balok kayu tanpa menjatuhkan menara." },
+            { id: 36, cat: "Papan", name: "Risk", desc: "Permainan strategi penaklukan wilayah dunia." },
+            { id: 37, cat: "Papan", name: "Dungeons & Dragons", desc: "Permainan peran (RPG) meja dengan narasi." },
+            { id: 38, cat: "Papan", name: "Catan", desc: "Membangun pemukiman dan perdagangan sumber daya." },
+            { id: 39, cat: "Papan", name: "Pictionary", desc: "Menebak kata berdasarkan gambar." },
+            { id: 40, cat: "Papan", name: "Tebak Gaya", desc: "Menebak kata berdasarkan gerakan tubuh." },
+            // Digital (41–60)
+            { id: 41, cat: "Digital", name: "RPG", desc: "Memainkan karakter dalam alur cerita mendalam." },
+            { id: 42, cat: "Digital", name: "FPS", desc: "Permainan tembak-menembak sudut pandang orang pertama." },
+            { id: 43, cat: "Digital", name: "MOBA", desc: "Pertempuran arena daring antar tim (seperti MLBB)." },
+            { id: 44, cat: "Digital", name: "Battle Royale", desc: "Bertahan hidup hingga menjadi yang terakhir." },
+            { id: 45, cat: "Digital", name: "Platformer", desc: "Melompati rintangan (seperti Super Mario)." },
+            { id: 46, cat: "Digital", name: "Sandbox", desc: "Membangun dunia sesuai kreativitas (seperti Minecraft)." },
+            { id: 47, cat: "Digital", name: "Simulasi", desc: "Menjalani kehidupan atau pekerjaan (seperti The Sims)." },
+            { id: 48, cat: "Digital", name: "Racing", desc: "Balapan kendaraan berkecepatan tinggi." },
+            { id: 49, cat: "Digital", name: "Puzzle Digital", desc: "Menyusun gambar atau logika (seperti Tetris)." },
+            { id: 50, cat: "Digital", name: "Rhythm Game", desc: "Mengikuti ketukan musik dengan tepat." },
+            { id: 51, cat: "Digital", name: "Horror Survival", desc: "Bertahan hidup di lingkungan menakutkan." },
+            { id: 52, cat: "Digital", name: "RTS", desc: "Mengatur pasukan secara langsung (Real-Time Strategy)." },
+            { id: 53, cat: "Digital", name: "Sport Digital", desc: "Simulasi olahraga seperti FIFA atau NBA." },
+            { id: 54, cat: "Digital", name: "Gacha", desc: "Mengoleksi karakter melalui sistem keberuntungan." },
+            { id: 55, cat: "Digital", name: "Visual Novel", desc: "Membaca cerita dengan pilihan alur." },
+            { id: 56, cat: "Digital", name: "Fighting Game", desc: "Pertarungan satu lawan satu (seperti Tekken)." },
+            { id: 57, cat: "Digital", name: "Open World", desc: "Menjelajahi peta yang sangat luas tanpa batas." },
+            { id: 58, cat: "Digital", name: "Stealth", desc: "Menyelesaikan misi dengan cara bersembunyi." },
+            { id: 59, cat: "Digital", name: "Point & Click", desc: "Petualangan dengan mengeklik objek di layar." },
+            { id: 60, cat: "Digital", name: "Endless Runner", desc: "Berlari sejauh mungkin tanpa henti." },
+            // Asah Otak (61–80)
+            { id: 61, cat: "Asah Otak", name: "Teka-Teki Silang", desc: "Mengisi kotak kosong berdasarkan petunjuk kata." },
+            { id: 62, cat: "Asah Otak", name: "Sudoku", desc: "Mengisi angka 1-9 tanpa ada yang kembar." },
+            { id: 63, cat: "Asah Otak", name: "Rubik", desc: "Menyusun warna kubus agar sama di setiap sisi." },
+            { id: 64, cat: "Asah Otak", name: "Puzzle Jigsaw", desc: "Menyusun potongan gambar menjadi utuh." },
+            { id: 65, cat: "Asah Otak", name: "Tebak-tebakan", desc: "Memberi teka-teki lucu atau sulit." },
+            { id: 66, cat: "Asah Otak", name: "Cerdas Cermat", desc: "Adu cepat menjawab pertanyaan pengetahuan umum." },
+            { id: 67, cat: "Asah Otak", name: "Mencari Jejak", desc: "Mengikuti petunjuk untuk menemukan lokasi akhir." },
+            { id: 68, cat: "Asah Otak", name: "Escape Room", desc: "Memecahkan teka-teki untuk keluar ruangan." },
+            { id: 69, cat: "Asah Otak", name: "Origami", desc: "Melipat kertas menjadi berbagai bentuk." },
+            { id: 70, cat: "Asah Otak", name: "Mewarnai", desc: "Mengisi warna pada pola gambar yang ada." },
+            { id: 71, cat: "Asah Otak", name: "Cerita Berantai", desc: "Melanjutkan kalimat cerita dari orang sebelumnya." },
+            { id: 72, cat: "Asah Otak", name: "Stop Motion", desc: "Membuat film dari rangkaian foto benda mati." },
+            { id: 73, cat: "Asah Otak", name: "Lego", desc: "Membangun struktur menggunakan balok susun." },
+            { id: 74, cat: "Asah Otak", name: "Brain Teasers", desc: "Logika pendek yang melatih ketajaman otak." },
+            { id: 75, cat: "Asah Otak", name: "Scavenger Hunt", desc: "Mencari daftar barang di area tertentu." },
+            { id: 76, cat: "Asah Otak", name: "20 Questions", desc: "Menebak benda hanya dengan 20 pertanyaan." },
+            { id: 77, cat: "Asah Otak", name: "I Spy", desc: "Menebak benda berdasarkan ciri yang dilihat." },
+            { id: 78, cat: "Asah Otak", name: "Simon Says", desc: "Mengikuti instruksi jika diawali kata Simon." },
+            { id: 79, cat: "Asah Otak", name: "Tongue Twister", desc: "Mengucapkan kalimat sulit dengan cepat." },
+            { id: 80, cat: "Asah Otak", name: "Memory Game", desc: "Mengingat posisi kartu yang tertutup." },
+            // Sosial (81–100)
+            { id: 81, cat: "Sosial", name: "Truth or Dare", desc: "Memilih berkata jujur atau tantangan fisik." },
+            { id: 82, cat: "Sosial", name: "Never Have I Ever", desc: "Mengaku hal yang belum pernah dilakukan." },
+            { id: 83, cat: "Sosial", name: "Musical Chairs", desc: "Berebut kursi saat musik berhenti." },
+            { id: 84, cat: "Sosial", name: "Whisper Challenge", desc: "Membisikkan kalimat hingga orang terakhir." },
+            { id: 85, cat: "Sosial", name: "Freeze Dance", desc: "Menari dan mematung saat musik berhenti." },
+            { id: 86, cat: "Sosial", name: "Two Truths & A Lie", desc: "Menebak mana yang bohong dari 3 pernyataan." },
+            { id: 87, cat: "Sosial", name: "Pillow Fight", desc: "Perang menggunakan bantal empuk." },
+            { id: 88, cat: "Sosial", name: "Blindfold Walk", desc: "Berjalan mata tertutup dipandu suara teman." },
+            { id: 89, cat: "Sosial", name: "The Floor is Lava", desc: "Berlagak lantai adalah lava panas." },
+            { id: 90, cat: "Sosial", name: "Mafia", desc: "Mencari pengkhianat dalam kelompok." },
+            { id: 91, cat: "Sosial", name: "Would You Rather", desc: "Memilih satu dari dua pilihan sulit." },
+            { id: 92, cat: "Sosial", name: "Karaoke", desc: "Menyanyi bersama mengikuti lirik." },
+            { id: 93, cat: "Sosial", name: "Air Hockey", desc: "Menembak piringan plastik di meja udara." },
+            { id: 94, cat: "Sosial", name: "Dart", desc: "Melempar anak panah ke papan target." },
+            { id: 95, cat: "Sosial", name: "Bowling", desc: "Menggelindingkan bola untuk menjatuhkan pin." },
+            { id: 96, cat: "Sosial", name: "Paintball", desc: "Perang-perangan menggunakan peluru cat." },
+            { id: 97, cat: "Sosial", name: "Laser Tag", desc: "Perang menggunakan senjata inframerah." },
+            { id: 98, cat: "Sosial", name: "Billiard", desc: "Memasukkan bola ke lubang meja dengan stik." },
+            { id: 99, cat: "Sosial", name: "Trampolin", desc: "Melompat setinggi mungkin di jaring elastis." },
+            { id: 100, cat: "Sosial", name: "Hula Hoop", desc: "Memutar gelang besar di pinggang." }
+        ];
+
+        // ============================================================
+        //  DOM REFS
+        // ============================================================
+        const grid = document.getElementById('gameGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const randomBtn = document.getElementById('randomBtn');
+        const countNumber = document.getElementById('countNumber');
+
+        let currentFiltered = games.slice();
+        let isAnimating = false;
+
+        // ============================================================
+        //  CREATE CARD ELEMENT
+        // ============================================================
+        function createCard(game) {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.id = 'game-' + game.id;
+
+            // Kategori warna border
+            const catColors = {
+                'Tradisional': '#2ecc71',
+                'Papan': '#e67e22',
+                'Digital': '#3498db',
+                'Asah Otak': '#9b59b6',
+                'Sosial': '#e74c3c'
+            };
+            card.style.borderLeftColor = catColors[game.cat] || '#4a90e2';
+
+            card.innerHTML = `
+              <div class="card-top">
+                <h3><span class="game-id">${game.id}.</span> ${game.name}</h3>
+                <span class="category-tag">${game.cat}</span>
+              </div>
+              <p>${game.desc}</p>
+            `;
+            return card;
+        }
+
+        // ============================================================
+        //  RENDER (with GSAP entrance)
+        // ============================================================
+        function renderGames(gameList, animateIn = true, onComplete = null) {
+            // Clear grid
+            grid.innerHTML = '';
+
+            if (gameList.length === 0) {
+                // Empty state
+                const empty = document.createElement('div');
+                empty.className = 'empty-state';
+                empty.innerHTML = `
+                <span class="empty-icon">🔎</span>
+                <h3>Tidak ada permainan ditemukan</h3>
+                <p>Coba ubah kata kunci atau kategori pencarian.</p>
+              `;
+                grid.appendChild(empty);
+                countNumber.textContent = '0';
+                if (onComplete) onComplete();
+                return;
+            }
+
+            // Create card elements
+            const fragment = document.createDocumentFragment();
+            gameList.forEach(game => {
+                fragment.appendChild(createCard(game));
+            });
+            grid.appendChild(fragment);
+
+            countNumber.textContent = gameList.length;
+
+            // GSAP entrance
+            if (animateIn) {
+                const cards = grid.querySelectorAll('.game-card');
+                // Set initial state
+                gsap.set(cards, { opacity: 0, y: 30, scale: 0.96 });
+
+                const tl = gsap.timeline({
+                    onComplete: () => {
+                        if (onComplete) onComplete();
+                    }
+                });
+
+                tl.to(cards, {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    duration: 0.5,
+                    stagger: 0.04,
+                    ease: 'power2.out',
+                    clearProps: 'transform'
+                });
+
+                // Store timeline ref for potential interruption
+                grid._anim = tl;
+            } else {
+                // No animation, just show
+                gsap.set(grid.querySelectorAll('.game-card'), { opacity: 1, y: 0, scale: 1 });
+                if (onComplete) onComplete();
+            }
+        }
+
+        // ============================================================
+        //  FILTER
+        // ============================================================
+        function filterGames(animateOut = true, callback = null) {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const searchText = searchInput.value.toLowerCase().trim();
+            const catFilter = categoryFilter.value;
+
+            const filtered = games.filter(g => {
+                const matchSearch = g.name.toLowerCase().includes(searchText);
+                const matchCat = catFilter === 'all' || g.cat === catFilter;
+                return matchSearch && matchCat;
+            });
+
+            currentFiltered = filtered;
+
+            if (!animateOut) {
+                renderGames(filtered, true, () => {
+                    isAnimating = false;
+                    if (callback) callback();
+                });
+                return;
+            }
+
+            // Animate out existing cards
+            const cards = grid.querySelectorAll('.game-card');
+            if (cards.length === 0) {
+                renderGames(filtered, true, () => {
+                    isAnimating = false;
+                    if (callback) callback();
+                });
+                return;
+            }
+
+            // Kill any ongoing animation on grid
+            if (grid._anim) {
+                grid._anim.kill();
+                delete grid._anim;
+            }
+
+            const tl = gsap.timeline({
+                onComplete: () => {
+                    renderGames(filtered, true, () => {
+                        isAnimating = false;
+                        if (callback) callback();
+                    });
+                }
+            });
+
+            tl.to(cards, {
+                opacity: 0,
+                y: -20,
+                scale: 0.92,
+                duration: 0.25,
+                stagger: 0.015,
+                ease: 'power2.in',
+                clearProps: 'transform'
+            });
+        }
+
+        // ============================================================
+        //  RANDOM PICK
+        // ============================================================
+        function pickRandom() {
+            if (isAnimating) return;
+
+            // Reset filters
+            searchInput.value = '';
+            categoryFilter.value = 'all';
+
+            // Remove existing highlights
+            document.querySelectorAll('.game-card.highlight').forEach(c => c.classList.remove('highlight'));
+
+            // Pick a random game
+            const randomIndex = Math.floor(Math.random() * games.length);
+            const selectedGame = games[randomIndex];
+
+            // Filter with animation, then highlight
+            filterGames(true, () => {
+                const card = document.getElementById('game-' + selectedGame.id);
+                if (!card) return;
+
+                // Scroll to card
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Wait a beat then highlight
+                gsap.delayedCall(0.3, () => {
+                    // Remove any existing highlight class
+                    document.querySelectorAll('.game-card.highlight').forEach(c => c.classList.remove('highlight'));
+
+                    // Add highlight class
+                    card.classList.add('highlight');
+
+                    // Animate the card with GSAP
+                    const tl = gsap.timeline();
+
+                    // Bounce in
+                    tl.fromTo(card, { scale: 0.85, opacity: 0.6 }, {
+                        scale: 1,
+                        opacity: 1,
+                        duration: 0.5,
+                        ease: 'elastic.out(1, 0.5)',
+                    });
+
+                    // Pulse glow
+                    tl.to(card, {
+                        boxShadow: '0 0 40px rgba(243, 156, 18, 0.35)',
+                        duration: 0.7,
+                        yoyo: true,
+                        repeat: 3,
+                        ease: 'sine.inOut',
+                        onComplete: () => {
+                            // Keep a subtle glow
+                            gsap.to(card, {
+                                boxShadow: '0 0 20px rgba(243, 156, 18, 0.15)',
+                                duration: 0.5,
+                                ease: 'power2.out'
+                            });
+                        }
+                    });
+
+                    // Also pulse the border
+                    tl.to(card, {
+                        borderLeftColor: '#f39c12',
+                        duration: 0.6,
+                        yoyo: true,
+                        repeat: 3,
+                        ease: 'sine.inOut'
+                    }, 0);
+
+                    // Confetti-like micro celebration on the card
+                    for (let i = 0; i < 6; i++) {
+                        const spark = document.createElement('span');
+                        spark.textContent = ['✨', '⭐', '🎯', '🌟', '💫', '🎉'][i % 6];
+                        spark.style.cssText = `
+                        position: absolute;
+                        font-size: ${16 + Math.random() * 14}px;
+                        pointer-events: none;
+                        z-index: 20;
+                        left: ${20 + Math.random() * 60}%;
+                        top: ${10 + Math.random() * 60}%;
+                        opacity: 0;
+                      `;
+                        card.appendChild(spark);
+
+                        gsap.fromTo(spark, { opacity: 0, scale: 0.5, y: 0 }, {
+                            opacity: 1,
+                            scale: 1.2,
+                            y: -40 - Math.random() * 50,
+                            duration: 0.7 + Math.random() * 0.3,
+                            ease: 'power2.out',
+                            onComplete: () => {
+                                gsap.to(spark, { opacity: 0, duration: 0.3, delay: 0.2, onComplete: () =>
+                                        spark.remove() });
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        // ============================================================
+        //  EVENT BINDING (with debounce for search)
+        // ============================================================
+        let searchTimeout = null;
+
+        searchInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => filterGames(true), 150);
+        });
+
+        categoryFilter.addEventListener('change', () => {
+            filterGames(true);
+        });
+
+        randomBtn.addEventListener('click', pickRandom);
+
+        // ============================================================
+        //  KEYBOARD SHORTCUT: Ctrl+Shift+R for random
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'r' || e.key === 'R')) {
+                e.preventDefault();
+                pickRandom();
+            }
+        });
+
+        // ============================================================
+        //  INIT — with entrance animation
+        // ============================================================
+        renderGames(games, true);
+
+        // Also animate the controls in
+        const ctrlEl = document.getElementById('controls');
+        gsap.from(ctrlEl, {
+            opacity: 0,
+            y: -20,
+            duration: 0.6,
+            delay: 0.1,
+            ease: 'power2.out'
+        });
+
+        gsap.from('header h1', {
+            opacity: 0,
+            y: -30,
+            duration: 0.7,
+            delay: 0.05,
+            ease: 'power2.out'
+        });
+
+        gsap.from('header p', {
+            opacity: 0,
+            y: -15,
+            duration: 0.6,
+            delay: 0.2,
+            ease: 'power2.out'
+        });
+
+        // Animate footer
+        gsap.from('.footer', {
+            opacity: 0,
+            y: 20,
+            duration: 0.6,
+            delay: 0.6,
+            ease: 'power2.out'
+        });
+
+        // Small floating animation for the dice
+        gsap.to('.btn-random .dice', {
+            y: -4,
+            duration: 0.6,
+            repeat: -1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+
+        console.log('🎮 GSAP Game Catalog loaded!');
+        console.log('💡 Tip: Press Ctrl+Shift+R for a random pick!');
+        console.log('🏷️ © 2026 AnziGame');
+    </script>
+
+</body>
+</html>
